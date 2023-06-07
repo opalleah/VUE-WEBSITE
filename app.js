@@ -2,8 +2,9 @@ Vue.component('login-page', {
   data() {
     return {
       username: '',
-      password: ''
-    }
+      password: '',
+      errorMessage: ''
+    };
   },
   methods: {
     login() {
@@ -11,19 +12,26 @@ Vue.component('login-page', {
       // For simplicity, let's assume the login is successful
       if (this.username !== '') {
         this.$emit('login', this.username); // Emit the username when logging in
+      } else {
+        this.errorMessage = 'Please enter a username and password';
       }
     }
   },
   template: `
-    <div>
-      <h1 class="login-heading">Login</h1>
-      <input v-model="username" type="text" placeholder="Username" required>
-      <input v-model="password" type="password" placeholder="Password">
-      <button @click="login">Sign In</button>
+    <div class="login-container">
+      <form class="login-form">
+        <h1 class="login-heading">Login</h1>
+        <div class="login-image">
+          <img src="profilePicture1.jpg" alt="Login Image" class="profile-picture">
+        </div>
+        <input class="login-input" v-model="username" type="text" placeholder="Username" required>
+        <input class="login-input" v-model="password" type="password" placeholder="Password" required>
+        <button class="login-button" @click="login">Sign In</button>
+        <p v-if="errorMessage" class="login-error">{{ errorMessage }}</p>
+      </form>
     </div>
   `
 });
-
 
 Vue.component('timeline-page', {
   props: ['username'],
@@ -33,7 +41,8 @@ Vue.component('timeline-page', {
       postContent: '',
       selectedMood: '',
       profilePicture: 'profilePicture1.jpg',
-      editingPostId: null
+      editingPostId: null,
+      showProfileSection: false,
     }
   },
   methods: {
@@ -52,6 +61,13 @@ Vue.component('timeline-page', {
       this.postContent = '';
       this.selectedMood = '';
     },
+
+    toggleProfileSection() {
+      this.showProfileSection = !this.showProfileSection;
+    },
+    
+    
+
     deletePost(postId) {
       this.posts = this.posts.filter(post => post.id !== postId);
     },
@@ -95,8 +111,9 @@ Vue.component('timeline-page', {
             <i class="far fa-angry" @click="selectMood('angry')" :class="{ 'selected': selectedMood === 'angry' }"></i>
           </div>
           <button @click="addPost">Add Post</button>
+          <button @click="toggleProfileSection">Edit Profile</button>
         </div>
-        
+    
         <div class="timeline">
           <div v-for="post in posts" :key="post.id" class="post">
             <div class="post-header">
@@ -115,42 +132,43 @@ Vue.component('timeline-page', {
           </div>
         </div>
       </div>
-      <div class="profile-section">
-        <h2>Edit Profile</h2>
-        <div>
-          <img class="profile-picture" :src="profilePicture" alt="Profile Picture">
-          <div class="profile-picture-list">
-            <img class="profile-picture-item" src="profilePicture1.jpg" alt="Profile Picture 1" @click="updateProfilePicture('profilePicture1.jpg')">
-            <img class="profile-picture-item" src="profilePicture2.jpg" alt="Profile Picture 2" @click="updateProfilePicture('profilePicture2.jpg')">
-            <img class="profile-picture-item" src="profilePicture3.jpg" alt="Profile Picture 3" @click="updateProfilePicture('profilePicture3.jpg')">
-            <img class="profile-picture-item" src="profilePicture4.jpg" alt="Profile Picture 3" @click="updateProfilePicture('profilePicture4.jpg')">
-          </div>
+    
+      
+        <div class="profile-section" v-if="showProfileSection">
+          <h2>Edit Profile</h2>
           <div>
-            <label for="username">Username:</label>
-            <input id="username" v-model="username" type="text">
+            <img class="profile-picture" :src="profilePicture" alt="Profile Picture">
+            <div class="profile-picture-list">
+              <img class="profile-picture-item" src="profilePicture1.jpg" alt="Profile Picture 1" @click="updateProfilePicture('profilePicture1.jpg')">
+              <img class="profile-picture-item" src="profilePicture2.jpg" alt="Profile Picture 2" @click="updateProfilePicture('profilePicture2.jpg')">
+              <img class="profile-picture-item" src="profilePicture3.jpg" alt="Profile Picture 3" @click="updateProfilePicture('profilePicture3.jpg')">
+              <img class="profile-picture-item" src="profilePicture4.jpg" alt="Profile Picture 3" @click="updateProfilePicture('profilePicture4.jpg')">
+            </div>
+            <div>
+              <label for="username">Username:</label>
+              <input id="username" v-model="username" type="text">
+            </div>
+            <button @click="updateUsername(username)">Save</button>
           </div>
-          <button @click="updateUsername(username)">Save</button>
         </div>
-      </div>
+      </transition>
     </div>
   `
 });
 
-
-    new Vue({
-      el: '#app',
-      data() {
-        return {
-          isLoggedIn: false,
-          username: '',
-          password: ''
-        };
-      },
-      methods: {
-        login(username) {
-          this.isLoggedIn = true;
-          this.username = username;
-        }
-      }
-    });
-    
+new Vue({
+  el: '#app',
+  data() {
+    return {
+      isLoggedIn: false,
+      username: '',
+      password: ''
+    };
+  },
+  methods: {
+    login(username) {
+      this.isLoggedIn = true;
+      this.username = username;
+    }
+  }
+});
