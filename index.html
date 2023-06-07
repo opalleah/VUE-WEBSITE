@@ -10,8 +10,9 @@
 </head>
 
 <div id="app">
-    <login-page v-if="!isLoggedIn" @login="login"></login-page>
-    <timeline-page v-else></timeline-page>
+  <login-page v-if="!isLoggedIn" @login="login"></login-page>
+  <timeline-page v-else :username="username"></timeline-page>
+</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
