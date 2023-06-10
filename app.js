@@ -142,6 +142,7 @@ Vue.component('timeline-page', {
   template: `
     <div class="timeline-container">
       <div class="post-section">
+      <img class="profile-picture" :src="profilePicture" alt="Profile Picture">
         <h2>Welcome, {{ username }}!</h2>
         <div class="form">
           <textarea v-model="postContent" placeholder="What's on your mind?"></textarea>
