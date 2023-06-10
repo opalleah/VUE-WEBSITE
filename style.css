@@ -1,8 +1,31 @@
+/* style.css */
+
+/* Global styles */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout styles */
+
 .timeline-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .post-section {
@@ -12,20 +35,19 @@
 .profile-section {
   position: fixed;
   top: 0;
-  right: 0; /* Show the section on the right side of the screen */
-  width: calc(100% - 800px); /* Subtract the width of the timeline section */
-  height: 100vh;
+  right: 0;
+  width: calc(100% - 800px);
+  min-height: 100vh;
   background-color: #f0f0f0;
   padding: 20px;
   border-radius: 5px;
-  transition: transform 0.3s ease-in-out; /* Update the transition property */
+  transition: transform 0.3s ease-in-out;
 }
-
-
 
 .profile-section h2 {
   margin-bottom: 10px;
   font-weight: bold;
+  color: #293132;
 }
 
 .profile-picture {
@@ -47,6 +69,7 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .timeline {
@@ -68,6 +91,7 @@
 
 .post-header .username {
   font-weight: bold;
+  color: #52796f;
 }
 
 .post-header .date {
@@ -77,6 +101,7 @@
 
 .post-content p {
   margin: 0;
+  color: #293132;
 }
 
 .post-footer {
@@ -180,13 +205,11 @@ input[type="text"]:focus {
   color: #52796f;
 }
 
-
-
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #cad2c5;
 }
 
@@ -249,4 +272,3 @@ input[type="text"]:focus {
   margin-top: 10px;
   font-weight: bold;
 }
-
