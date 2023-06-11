@@ -4,22 +4,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="style.css"> <!-- Link to the custom stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Link to the Font Awesome library -->
   <title>Timeline App</title>
 </head>
 
 <body>
   <div id="app">
-    <login-page v-if="!isLoggedIn" @login="login"></login-page>
-    <timeline-page v-else :username="username"></timeline-page>
+    <login-page v-if="!isLoggedIn" @login="login"></login-page> <!-- Display the login page component if user is not logged in -->
+    <timeline-page v-else :username="username"></timeline-page> <!-- Display the timeline page component if user is logged in -->
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script> <!-- Link to Vue.js library -->
+  <script src="app.js"></script> <!-- Link to the main JavaScript file -->
 </body>
 
 </html>
+
 
 
 
