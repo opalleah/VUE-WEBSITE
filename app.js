@@ -1,3 +1,4 @@
+//Login Page Component
 Vue.component('login-page', {
   data() {
     return {
@@ -8,15 +9,15 @@ Vue.component('login-page', {
   },
   methods: {
     login() {
-      // Perform authentication logic here
-      // For simplicity, let's assume the login is successful
+      // For simplicity, let's assume the login is always successful
       if (this.username !== '') {
         this.$emit('login', this.username); // Emit the username when logging in
       } else {
-        this.errorMessage = 'Please enter a username and password';
+        this.errorMessage = 'Please enter a username and password'; //Error message if user does not enter a username
       }
     }
   },
+  //Template for Login In screen
   template: `
     <div class="login-container">
       <form class="login-form">
@@ -33,19 +34,21 @@ Vue.component('login-page', {
   `
 });
 
+//Timeline Page Component
 Vue.component('timeline-page', {
   props: ['username'],
   data() {
     return {
-      posts: [],
+      // Data properties for the component
+      posts: [], // Array to store the posts
       postContent: '',
       selectedMood: '',
-      profilePicture: 'profilePicture1.jpg',
-      editingPostId: null,
-      showProfileSection: false,
+      profilePicture: 'profilePicture1.jpg', //Give user default profile picture
+      editingPostId: null, // ID of the post being edited (null if no post is being edited)
+      showProfileSection: false, // Controls the visibility of the profile section - set to false at first
       likedPosts: [],
-      currentPage: 1,
-      postsPerPage: 5,
+      currentPage: 1, // Current page number for pagination
+      postsPerPage: 5, // Number of posts to display per page
       searchKeyword: ''
     };
   },
@@ -60,7 +63,7 @@ Vue.component('timeline-page', {
         const post = this.posts.find(p => p.id === this.editingPostId);
         if (post) {
           post.content = this.postContent;
-          post.dateEdited = new Date().toLocaleString();
+          post.dateEdited = new Date().toLocaleString(); //Add an edit date to post when edited
         }
       } else {
         // Add new post
@@ -117,6 +120,7 @@ Vue.component('timeline-page', {
     },
 
     getMoodIcon(mood) {
+      // Returns the icon class based on the selected mood
       if (mood === 'happy') {
         return 'far fa-smile';
       } else if (mood === 'sad') {
@@ -170,6 +174,7 @@ Vue.component('timeline-page', {
       return Math.ceil(this.filteredPosts.length / this.postsPerPage);
     }
   },
+  //Timeline page template
   template: `
     <div class="timeline-container">
       <div class="post-section">
@@ -180,95 +185,117 @@ Vue.component('timeline-page', {
           <div class="mood-icons">
             <i class="far fa-smile" @click="selectMood('happy')" :class="{ 'selected': selectedMood === 'happy' }"></i>
             <i class="far fa-frown" @click="selectMood('sad')" :class="{ 'selected': selectedMood === 'sad' }"></i>
-             <i class="far fa-angry" @click="selectMood('angry')" :class="{ 'selected': selectedMood === 'angry' }"></i>
-             <i class="far fa-grin-stars" @click="selectMood('excited')" :class="{ 'selected': selectedMood === 'excited' }"></i>
-             <i class="far fa-smile-beam" @click="selectMood('calm')" :class="{ 'selected': selectedMood === 'calm' }"></i>
-             <i class="far fa-surprise" @click="selectMood('confused')" :class="{ 'selected': selectedMood === 'confused' }"></i>
-             <i class="far fa-heart" @click="selectMood('love')" :class="{ 'selected': selectedMood === 'love' }"></i>
-             <i class="far fa-surprise" @click="selectMood('surprised')" :class="{ 'selected': selectedMood === 'surprised' }"></i>
-    </div>
-
+            <i class="far fa-angry" @click="selectMood('angry')" :class="{ 'selected': selectedMood === 'angry' }"></i>
+            <i class="far fa-grin-stars" @click="selectMood('excited')" :class="{ 'selected': selectedMood === 'excited' }"></i>
+            <i class="far fa-smile-beam" @click="selectMood('calm')" :class="{ 'selected': selectedMood === 'calm' }"></i>
+            <i class="far fa-surprise" @click="selectMood('confused')" :class="{ 'selected': selectedMood === 'confused' }"></i>
+            <i class="far fa-heart" @click="selectMood('love')" :class="{ 'selected': selectedMood === 'love' }"></i>
+            <i class="far fa-surprise" @click="selectMood('surprised')" :class="{ 'selected': selectedMood === 'surprised' }"></i>
+          </div>
           <button v-if="!editingPostId" @click="addPost">Add Post</button>
           <button v-if="editingPostId" @click="addPost">Update Post</button>
           <button @click="toggleProfileSection">Edit Profile</button>
           <input type="text" v-model="searchKeyword" placeholder="Search posts">
           <div class="mood-buttons">
-          <button @click="resetMoodFilter" :class="{ 'active': selectedMood === '' }">All Moods</button>
+            <button @click="resetMoodFilter" :class="{ 'active': selectedMood === '' }">All Moods</button>
+          </div>
         </div>
+        
+        <div v-if="filteredPosts.length === 0" class="timeline-no-posts">
+          No posts found.
         </div>
 
         <div class="timeline">
-        <div v-for="post in pagedPosts" :key="post.id" class="post">
-          <div class="post-header">
-            <img class="profile-picture" :src="post.profilePicture" alt="Profile Picture">
-            <div>
-              <h4 class="username">{{ post.username }}</h4>
-              <p class="date">Date Posted: {{ post.date }}</p>
+          <div v-for="post in pagedPosts" :key="post.id" class="post">
+            <div class="post-header">
+              <img class="profile-picture" :src="post.profilePicture" alt="Profile Picture">
+              <div>
+                <h4 class="username">{{ post.username }}</h4>
+                <p class="date">Date Posted: {{ post.date }}</p>
+              </div>
+            </div>
+            <div class="post-content">
+              <p>{{ post.content }}</p>
+              <span class="mood" v-if="post.mood">
+                <p class="mood">
+                  Mood: <i :class="getMoodIcon(post.mood)"></i>
+                </p>
+              </span>
+            </div>
+            <div class="post-footer">
+              <i class="heart-icon"
+                :class="{'far fa-heart': likedPosts.indexOf(post.id) === -1, 'fas fa-heart': likedPosts.indexOf(post.id) !== -1}"
+                @click="likePost(post.id)"
+              ></i>
+              <p v-if="post.dateEdited" class="date-edited">Edited: {{ post.dateEdited }}</p>
+              <button @click="deletePost(post.id)">Delete</button>
+              <button @click="editPost(post.id)">Edit</button>
             </div>
           </div>
-          <div class="post-content">
-            <p>{{ post.content }}</p>
-            <span class="mood" v-if="post.mood">
-              <p class="mood">
-                Mood: <i :class="getMoodIcon(post.mood)"></i>
-              </p>
-            </span>
-          </div>
-          <div class="post-footer">
-            <i class="heart-icon"
-              :class="{'far fa-heart': likedPosts.indexOf(post.id) === -1, 'fas fa-heart': likedPosts.indexOf(post.id) !== -1}"
-              @click="likePost(post.id)"
-            ></i>
-            <p v-if="post.dateEdited" class="date-edited">Edited: {{ post.dateEdited }}</p>
-            <button @click="deletePost(post.id)">Delete</button>
-            <button @click="editPost(post.id)">Edit</button>
-          </div>
         </div>
-      </div>
-      
 
-        <div class="pagination">
-          <button v-if="currentPage > 1" @click="changePage(currentPage - 1)">Previous Page</button>
-          <span>Page {{ currentPage }} of {{ totalPages }}</span>
-          <button v-if="currentPage < totalPages" @click="changePage(currentPage + 1)">Next Page</button>
+        <div class="timeline-pagination">
+          <button
+            v-for="page in totalPages"
+            :key="page"
+            :class="['timeline-page-button', { 'timeline-page-active': currentPage === page }]"
+            @click="changePage(page)"
+          >
+            {{ page }}
+          </button>
         </div>
-      </div>
 
-      <div class="profile-section" v-if="showProfileSection">
-        <h2>Edit Profile</h2>
-        <div>
-          <img class="profile-picture" :src="profilePicture" alt="Profile Picture">
-          <div class="profile-picture-list">
-            <img class="profile-picture-item" src="profilePicture1.jpg" alt="Profile Picture 1" @click="updateProfilePicture('profilePicture1.jpg')">
-            <img class="profile-picture-item" src="profilePicture2.jpg" alt="Profile Picture 2" @click="updateProfilePicture('profilePicture2.jpg')">
-            <img class="profile-picture-item" src="profilePicture3.jpg" alt="Profile Picture 3" @click="updateProfilePicture('profilePicture3.jpg')">
-            <img class="profile-picture-item" src="profilePicture4.jpg" alt="Profile Picture 3" @click="updateProfilePicture('profilePicture4.jpg')">
-          </div>
+        <div class="profile-section" v-if="showProfileSection">
+          <h2>Edit Profile</h2>
           <div>
-            <label for="username">Username:</label>
-            <input id="username" v-model="username" type="text">
+            <img class="profile-picture" :src="profilePicture" alt="Profile Picture">
+            <div class="profile-picture-list">
+              <img class="profile-picture-item" src="profilePicture1.jpg" alt="Profile Picture 1" @click="updateProfilePicture('profilePicture1.jpg')">
+              <img class="profile-picture-item" src="profilePicture2.jpg" alt="Profile Picture 2" @click="updateProfilePicture('profilePicture2.jpg')">
+              <img class="profile-picture-item" src="profilePicture3.jpg" alt="Profile Picture 3" @click="updateProfilePicture('profilePicture3.jpg')">
+              <img class="profile-picture-item" src="profilePicture4.jpg" alt="Profile Picture 3" @click="updateProfilePicture('profilePicture4.jpg')">
+            </div>
+            <div>
+              <label for="username">Username:</label>
+              <input id="username" v-model="username" type="text" required>
+            </div>
+            <button @click="toggleProfileSection">Save Changes</button>
           </div>
-          <button @click="toggleProfileSection">Save Changes</button>
         </div>
       </div>
     </div>
   `
 });
 
+// Main App
+const app = new Vue({
+  el: '#app', 
 
-new Vue({
-  el: '#app',
-  data() {
-    return {
-      isLoggedIn: false,
-      username: '',
-      password: ''
-    };
+  data: {
+    // Data properties for the app
+    currentPage: 'login', // Keeps track of the current page (login or timeline)
+    loggedIn: false, // Indicates whether the user is logged in or not
+    username: '' // Stores the username of the user
   },
+
   methods: {
+    // Methods used in the app
     login(username) {
-      this.isLoggedIn = true;
-      this.username = username;
+      // Method to handle the login event triggered by the login page component
+      this.loggedIn = true; 
+      this.username = username; // Store the username as property
+      this.currentPage = 'timeline'; // Switch to the timeline page
     }
-  }
+  },
+
+  template: `
+    <div>
+      <login-page v-if="!loggedIn" @login="login"></login-page> 
+      <!-- Render the login page component if the user is not logged in -->
+      
+      <timeline-page v-if="loggedIn" :username="username"></timeline-page>
+      <!-- Render the timeline page component if the user is logged in -->
+    </div>
+  `
 });
+
