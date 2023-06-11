@@ -1,69 +1,79 @@
-/* style.css */
-
 /* Global styles */
 
+/* Set basic styles for the entire body */
 body {
   margin: 0;
   padding: 0;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-}
-
-/* Layout styles */
-
-.timeline-container {
+  font-family: Arial, sans-serif;
+  background-color: #3a589c;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #f0f0f0;
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
+/* Container for the timeline */
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f2f5;
   padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-top: 25%;
+  margin-bottom: 25%;
+  max-width: 500px; /* Set a maximum width for the timeline */
+  overflow-x: auto; /* Enable horizontal scrolling when content exceeds width */
 }
 
+/* Styles for the post section */
 .post-section {
-  flex: 1;
+  margin: 20px;
 }
 
+/* Styles for the profile section */
 .profile-section {
   position: fixed;
   top: 0;
   right: 0;
-  width: calc(100% - 800px);
+  height: calc(100% - 800px);
   min-height: 100vh;
-  background-color: #f0f0f0;
+  background-color: #f5f6f7;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   transition: transform 0.3s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Styles for the profile section heading */
 .profile-section h2 {
-  margin-bottom: 10px;
+  font-size: 20px;
   font-weight: bold;
-  color: #293132;
+  color: #1c1e21;
+  margin-bottom: 15px;
 }
 
+/* Styles for the profile picture */
 .profile-picture {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 10px;
+  margin: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* Styles for the profile picture list */
 .profile-picture-list {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
+/* Styles for each profile picture item */
 .profile-picture-item {
   width: 50px;
   height: 50px;
@@ -72,203 +82,263 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 }
 
+/* Styles for the timeline */
 .timeline {
-  margin-top: 20px;
+  margin: 20px;
 }
 
+/* Styles for each post */
 .post {
-  background-color: #f0f0f0;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
+  background-color: #ffffff;
+  padding: 30px;
+  margin: 20px;
+  border-radius: 10px;
+  color: #1c1e21;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 300px; /* Set a maximum width for each post */
+  max-height: 350px;
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds height */
 }
 
+/* Styles for the post header */
 .post-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
-}
-
-.post-header .username {
-  font-weight: bold;
-  color: #52796f;
-}
-
-.post-header .date {
-  color: gray;
-  font-size: 12px;
-}
-
-.post-content p {
-  margin: 0;
-  color: #293132;
-}
-
-.post-footer {
-  display: flex;
   align-items: center;
-  color: gray;
-  font-size: 14px;
-}
-
-.mood-icons {
-  display: flex;
-  gap: 10px;
   margin-bottom: 10px;
 }
 
-.mood-icons i {
+/* Styles for the username in the post header */
+.post-header .username {
+  font-weight: bold;
+  color: #1c1e21;
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+
+/* Styles for the date in the post header */
+.post-header .date {
+  color: #8b8d91;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+/* Styles for the mood in the post header */
+.post-header .mood {
+  color: #1c1e21;
+  font-size: 14px;
+}
+
+/* Styles for the mood icons in the post header */
+.post-header .mood i {
   font-size: 20px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/* Styles for the post content */
+.post-content p {
+  margin: 0;
+  margin-bottom: 10px;
+  color: #1c1e21;
+  white-space: pre-wrap; /* Preserve line breaks and wrap long content */
+}
+
+/* Styles for the post footer */
+.post-footer {
+  display: flex;
+  align-items: center;
+  color: #8b8d91;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Styles for the mood icons */
+.mood-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Styles for each mood icon */
+.mood-icons i {
+  font-size: 24px;
   cursor: pointer;
 }
 
+/* Styles for the selected mood icon */
 .mood-icons i.selected {
-  color: blue;
+  color: #4267b2;
+}
+
+/* Styles for buttons */
+button {
+  padding: 10px 20px;
+  background-color: #4267b2;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+}
+
+/* Styles for button hover */
+button:hover {
+  background-color: #3a589c;
 }
 
 /* Additional styles */
 
-.timeline-container {
-  font-family: Arial, sans-serif;
-}
-
+/* Styles for headings */
 h2 {
   font-size: 24px;
-  color: #293132;
+  color: #1c1e21;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
+/* Styles for text areas */
 textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #cad2c5;
+  margin-bottom: 15px;
+  border: 1px solid #d1d4d7;
   border-radius: 5px;
   resize: vertical;
+  font-size: 16px;
 }
 
-button {
-  padding: 10px;
-  background-color: #293132;
-  color: #f5d0c5;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #354f52;
-}
-
-form {
-  margin-bottom: 20px;
-}
-
-.profile-section {
-  color: #293132;
-}
-
-input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #cad2c5;
-  border-radius: 5px;
-}
-
-input[type="text"]:focus {
+/* Styles for focused text areas */
+textarea:focus {
   outline: none;
-  border-color: #98c1d9;
+  border-color: #4267b2;
 }
 
-.profile-picture-list {
-  justify-content: center;
+/* Styles for text inputs */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  border: 1px solid #d1d4d7;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
-.profile-picture-item {
-  cursor: pointer;
+/* Styles for focused text inputs */
+input[type="text"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #4267b2;
 }
 
-.post-header .username {
-  color: #52796f;
+/* Styles for primary buttons */
+button.primary {
+  background-color: #4267b2;
+  color: #ffffff;
 }
 
-.post-header .date {
-  font-size: 12px;
-  color: #52796f;
+/* Styles for primary button hover */
+button.primary:hover {
+  background-color: #3a589c;
 }
 
-.post-content p {
-  color: #293132;
+/* Styles for button container */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
 }
 
-.post-footer {
-  color: #52796f;
-}
-
+/* Styles for the login container */
 .login-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #cad2c5;
+  background-color: #f0f2f5;
+  border-radius: 10px;
+  margin-top: 25%;
 }
 
+/* Styles for the login form */
 .login-form {
-  background-color: #52796f;
-  padding: 30px;
-  border-radius: 5px;
+  width: 400px;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
+
+/* Styles for the login heading */
 .login-heading {
-  margin-bottom: 20px;
-  font-size: 32px;
+  font-size: 24px;
+  color: #1c1e21;
   font-weight: bold;
-  color: #2f3e46;
-  text-transform: uppercase;
-}
-
-.login-image {
   margin-bottom: 20px;
 }
 
-.login-image img {
-  width: 150px;
-  height: auto;
-  border-radius: 50%;
+/* Styles for the login image */
+.login-image {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
+/* Styles for the profile picture in the login form */
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Styles for the login input fields */
 .login-input {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #cad2c5;
-  border-radius: 3px;
-  background-color: #cad2c5;
-  color: #2f3e46;
-  font-weight: bold;
+  border: 1px solid #d1d4d7;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
+/* Styles for focused login input fields */
+.login-input:focus {
+  outline: none;
+  border-color: #4267b2;
+}
+
+/* Styles for the login button */
 .login-button {
   width: 100%;
   padding: 10px;
-  background-color: #2f3e46;
-  color: #fff;
+  background-color: #4267b2;
+  color: #ffffff;
   border: none;
-  border-radius: 3px;
+  border-radius: 9999px;
   cursor: pointer;
-  font-weight: bold;
-  text-transform: uppercase;
+  font-size: 16px;
 }
 
+/* Styles for the login button hover */
 .login-button:hover {
-  background-color: #354f52;
+  background-color: #3a589c;
 }
 
+/* Styles for the login error message */
 .login-error {
-  color: #2f3e46;
+  color: #ff0000;
+  font-size: 14px;
   margin-top: 10px;
-  font-weight: bold;
 }
