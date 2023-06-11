@@ -45,14 +45,15 @@ Vue.component('timeline-page', {
       showProfileSection: false,
       likedPosts: [],
       currentPage: 1,
-      postsPerPage: 5
+      postsPerPage: 5,
+      searchKeyword: ''
     };
   },
   methods: {
     toggleProfileSection() {
       this.showProfileSection = !this.showProfileSection;
     },
-  
+
     addPost() {
       if (this.editingPostId) {
         // Update existing post
@@ -74,13 +75,11 @@ Vue.component('timeline-page', {
         };
         this.posts.unshift(newPost);
       }
-  
 
       this.postContent = '';
       this.selectedMood = '';
       this.editingPostId = null;
     },
-  
 
     editPost(postId) {
       const post = this.posts.find(p => p.id === postId);
@@ -124,6 +123,16 @@ Vue.component('timeline-page', {
         return 'far fa-frown';
       } else if (mood === 'angry') {
         return 'far fa-angry';
+      } else if (mood === 'excited') {
+        return 'far fa-grin-stars';
+      } else if (mood === 'calm') {
+        return 'far fa-smile-beam';
+      } else if (mood === 'confused') {
+        return 'far fa-surprise';
+      } else if (mood === 'love') {
+        return 'far fa-heart';
+      } else if (mood === 'surprised') {
+        return 'far fa-surprise';
       } else {
         return '';
       }
@@ -131,56 +140,97 @@ Vue.component('timeline-page', {
 
     changePage(page) {
       this.currentPage = page;
+    },
+
+    filterByMood(mood) {
+      this.selectedMood = mood;
+    },
+
+    resetMoodFilter() {
+      this.selectedMood = '';
     }
   },
   computed: {
+    filteredPosts() {
+      const keyword = this.searchKeyword.toLowerCase();
+      return this.posts.filter(post => {
+        const content = post.content.toLowerCase();
+        const username = post.username.toLowerCase();
+        const mood = post.mood.toLowerCase();
+        const keywordMatches = content.includes(keyword) || username.includes(keyword);
+        const moodMatches = this.selectedMood === '' || mood === this.selectedMood;
+        return keywordMatches && moodMatches;
+      });
+    },
     pagedPosts() {
       const startIndex = (this.currentPage - 1) * this.postsPerPage;
-      return this.posts.slice(startIndex, startIndex + this.postsPerPage);
+      return this.filteredPosts.slice(startIndex, startIndex + this.postsPerPage);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredPosts.length / this.postsPerPage);
     }
   },
   template: `
     <div class="timeline-container">
       <div class="post-section">
-      <img class="profile-picture" :src="profilePicture" alt="Profile Picture">
+        <img class="profile-picture" :src="profilePicture" alt="Profile Picture">
         <h2>Welcome, {{ username }}!</h2>
         <div class="form">
           <textarea v-model="postContent" placeholder="What's on your mind?"></textarea>
           <div class="mood-icons">
             <i class="far fa-smile" @click="selectMood('happy')" :class="{ 'selected': selectedMood === 'happy' }"></i>
             <i class="far fa-frown" @click="selectMood('sad')" :class="{ 'selected': selectedMood === 'sad' }"></i>
-            <i class="far fa-angry" @click="selectMood('angry')" :class="{ 'selected': selectedMood === 'angry' }"></i>
-          </div>
+             <i class="far fa-angry" @click="selectMood('angry')" :class="{ 'selected': selectedMood === 'angry' }"></i>
+             <i class="far fa-grin-stars" @click="selectMood('excited')" :class="{ 'selected': selectedMood === 'excited' }"></i>
+             <i class="far fa-smile-beam" @click="selectMood('calm')" :class="{ 'selected': selectedMood === 'calm' }"></i>
+             <i class="far fa-surprise" @click="selectMood('confused')" :class="{ 'selected': selectedMood === 'confused' }"></i>
+             <i class="far fa-heart" @click="selectMood('love')" :class="{ 'selected': selectedMood === 'love' }"></i>
+             <i class="far fa-surprise" @click="selectMood('surprised')" :class="{ 'selected': selectedMood === 'surprised' }"></i>
+    </div>
+
           <button v-if="!editingPostId" @click="addPost">Add Post</button>
           <button v-if="editingPostId" @click="addPost">Update Post</button>
           <button @click="toggleProfileSection">Edit Profile</button>
+          <input type="text" v-model="searchKeyword" placeholder="Search posts">
+          <div class="mood-buttons">
+          <button @click="resetMoodFilter" :class="{ 'active': selectedMood === '' }">All Moods</button>
+        </div>
         </div>
 
         <div class="timeline">
-          <div v-for="post in pagedPosts" :key="post.id" class="post">
-            <div class="post-header">
-              <img class="profile-picture" :src="post.profilePicture" alt="Profile Picture">
-              <span class="username">{{ post.username }}</span>
-              <span class="date">{{ post.date }}</span>
-            </div>
-            <div class="post-content">
-              <p>{{ post.content }}</p>
-            </div>
-            <div class="post-footer">
-              <i class="heart-icon"
-                :class="{'far fa-heart': likedPosts.indexOf(post.id) === -1, 'fas fa-heart': likedPosts.indexOf(post.id) !== -1}"
-                @click="likePost(post.id)"
-              ></i>
-              <span class="date-edited">{{ post.dateEdited }}</span>
-              <button @click="deletePost(post.id)">Delete</button>
-              <button @click="editPost(post.id)">Edit</button>
+        <div v-for="post in pagedPosts" :key="post.id" class="post">
+          <div class="post-header">
+            <img class="profile-picture" :src="post.profilePicture" alt="Profile Picture">
+            <div>
+              <h4 class="username">{{ post.username }}</h4>
+              <p class="date">Date Posted: {{ post.date }}</p>
             </div>
           </div>
+          <div class="post-content">
+            <p>{{ post.content }}</p>
+            <span class="mood" v-if="post.mood">
+              <p class="mood">
+                Mood: <i :class="getMoodIcon(post.mood)"></i>
+              </p>
+            </span>
+          </div>
+          <div class="post-footer">
+            <i class="heart-icon"
+              :class="{'far fa-heart': likedPosts.indexOf(post.id) === -1, 'fas fa-heart': likedPosts.indexOf(post.id) !== -1}"
+              @click="likePost(post.id)"
+            ></i>
+            <p v-if="post.dateEdited" class="date-edited">Edited: {{ post.dateEdited }}</p>
+            <button @click="deletePost(post.id)">Delete</button>
+            <button @click="editPost(post.id)">Edit</button>
+          </div>
         </div>
+      </div>
+      
 
         <div class="pagination">
           <button v-if="currentPage > 1" @click="changePage(currentPage - 1)">Previous Page</button>
-          <button v-if="currentPage < Math.ceil(posts.length / postsPerPage)" @click="changePage(currentPage + 1)">Next Page</button>
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <button v-if="currentPage < totalPages" @click="changePage(currentPage + 1)">Next Page</button>
         </div>
       </div>
 
@@ -198,12 +248,13 @@ Vue.component('timeline-page', {
             <label for="username">Username:</label>
             <input id="username" v-model="username" type="text">
           </div>
-          <button @click="updateUsername(username)">Save</button>
+          <button @click="toggleProfileSection">Save Changes</button>
         </div>
       </div>
     </div>
   `
 });
+
 
 new Vue({
   el: '#app',
